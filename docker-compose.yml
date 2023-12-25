@@ -1,0 +1,32 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres
+    container_name: dailydo-postgres
+    restart: always
+    expose:
+      - 5432
+    networks:
+      - dailydo-network
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=dailydo
+  api:
+    image: andrehsvictor/dailydo-api:0.1
+    container_name: dailydo-api
+    build: .
+    restart: always
+    ports:
+      - 8081:8080
+    networks:
+      - dailydo-network
+    depends_on:
+      - db
+    environment:
+      - spring.datasource.url=jdbc:postgresql://db:5432/dailydo
+      - spring.datasource.username=postgres
+      - spring.datasource.password=postgres
+networks:
+  dailydo-network:
+    name: dailydo-network

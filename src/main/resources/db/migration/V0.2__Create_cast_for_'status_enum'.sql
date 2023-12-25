@@ -1,0 +1,1 @@
+create cast (character varying as status_enum) with inout as implicit;
