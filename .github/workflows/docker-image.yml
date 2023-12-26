@@ -13,7 +13,7 @@ jobs:
       - name: Run PostgresQL image
         run: docker run -d -p 5432:5432 --name dailydo-postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=dailydo postgres
       - name: Build .jar file
-        run: ./mvnw clean install
+        run: docker run -it maven mvn clean install
       - name: Build image
         run: docker build -f Dockerfile -t andrehsvictor/dailydo-api:0.1 .
       - name: Dockerhub login
