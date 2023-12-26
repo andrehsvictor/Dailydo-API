@@ -5,9 +5,11 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build-and-push-image-to-dockerhub:
+  build:
     runs-on: ubuntu-latest
     steps:
+      - name: Clone dailydo-api repository
+        uses: actions/checkout@v2
       - name: Run PostgresQL image
         run: docker run -d -p 5432:5432 --name dailydo-postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=dailydo postgres
       - name: Build .jar file
