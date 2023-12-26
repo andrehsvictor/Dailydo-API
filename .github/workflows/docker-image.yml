@@ -8,6 +8,11 @@ jobs:
     steps:
       - name: Clone dailydo-api repository
         uses: actions/checkout@v2
+      - name: Setup Java JDK
+        uses: actions/setup-java@v4.0.0
+        with:
+          java-version: '21'
+          distribution: 'temurin'
       - name: Run PostgresQL image
         run: docker run -d -p 5432:5432 --name dailydo-postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=dailydo postgres
       - name: Pull maven image
@@ -17,6 +22,6 @@ jobs:
       - name: Build image
         run: docker build -f Dockerfile -t andrehsvictor/dailydo-api:0.1 .
       - name: Dockerhub login
-        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_ACCESS_TOKEN }}
       - name: Push image to Dockerhub
         run: docker push andrehsvictor/dailydo-api:0.1
