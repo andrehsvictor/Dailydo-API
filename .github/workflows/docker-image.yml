@@ -1,21 +1,19 @@
-name: Docker Image CI
+name: Build and push to Dockerhub
 
 on:
   push:
     branches: [ "main" ]
 
 jobs:
-  build:
+  build-jar:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: Build the Docker image
-      run: docker compose up
-
-    - uses: actions/checkout@v3
-    - name: Dockerhub login
-      run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-
-    - uses: actions/checkout@v3
-    - name: Push to Dockerhub
-      run: docker push andrehsvictor/dailydo-api:0.1
+      - name: Pull PostgresQL image from Dockerhub
+        run: docker run -d -p 5432:5432 --name dailydo-postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=dailydo postgres
+      - name: Build jar
+        run: ./mvnw clean install
+  build-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build image
+        run: docker build -t andrehsvictor/dailydo-api:0.1 .
