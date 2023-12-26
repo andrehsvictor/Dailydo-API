@@ -5,15 +5,16 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build-jar:
+  build-and-push-image-to-dockerhub:
     runs-on: ubuntu-latest
     steps:
-      - name: Pull PostgresQL image from Dockerhub
+      - name: Run PostgresQL image
         run: docker run -d -p 5432:5432 --name dailydo-postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=dailydo postgres
-      - name: Build jar
-        run: ./mvnw clean install
-  build-image:
-    runs-on: ubuntu-latest
-    steps:
+      - name: Build .jar file
+        run: docker run -d mvn clean install
       - name: Build image
-        run: docker build -t andrehsvictor/dailydo-api:0.1 .
+        run: docker build -t andrehsvictor/dailydo-api:0.1
+      - name: Dockerhub login
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+      - name: Push image to Dockerhub
+        run: docker push andrehsvictor/dailydo-api:0.1
