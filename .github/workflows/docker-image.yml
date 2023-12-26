@@ -1,0 +1,22 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag andrehsvictor/dailydo-api:0.1
+
+    - uses: actions/checkout@v3
+    - name: Dockerhub login
+      run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+
+    - uses: actions/checkout@v3
+    - name: Push to Dockerhub
+      run: docker push andrehsvictor/dailydo-api:0.1
