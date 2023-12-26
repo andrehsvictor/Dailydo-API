@@ -11,7 +11,7 @@ jobs:
       - name: Run PostgresQL image
         run: docker run -d -p 5432:5432 --name dailydo-postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=dailydo postgres
       - name: Pull maven image
-        run: docker pull maven
+        run: docker pull maven:3.9.6-eclipse-temurin-21
       - name: Build .jar file
         run: mvn clean install
       - name: Build image
