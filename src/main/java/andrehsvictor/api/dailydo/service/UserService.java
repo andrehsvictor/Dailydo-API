@@ -7,8 +7,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import andrehsvictor.api.dailydo.dto.AccountCredentialsDTO;
+import andrehsvictor.api.dailydo.dto.UserDTO;
 import andrehsvictor.api.dailydo.entity.User;
 import andrehsvictor.api.dailydo.repository.UserRepository;
+import andrehsvictor.api.dailydo.util.CurrentUserProvider;
+import andrehsvictor.api.dailydo.util.ObjectMapper;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -27,5 +30,10 @@ public class UserService implements UserDetailsService {
                 (u) -> new RuntimeException("Username \"" + u.getUsername() + "\" already exists"));
         User user = new User(accountCredentials.getUsername(), accountCredentials.getPassword());
         return repository.save(user);
+    }
+
+    public UserDTO findCurrentUser() {
+        User user = CurrentUserProvider.currentUser();
+        return ObjectMapper.map(user, UserDTO.class);
     }
 }
