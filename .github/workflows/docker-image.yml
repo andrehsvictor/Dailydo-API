@@ -1,9 +1,7 @@
-name: Build and push to Dockerhub
-
+name: Build and push image to Dockerhub
 on:
   push:
     branches: [ "main" ]
-
 jobs:
   build:
     runs-on: ubuntu-latest
