@@ -1,4 +1,4 @@
-cname: Build and push image to Dockerhub
+name: Build and push image to Dockerhub
 on:
   push:
     branches: [ "main" ]
