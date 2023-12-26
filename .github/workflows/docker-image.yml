@@ -1,4 +1,4 @@
-name: Build and push image to Dockerhub
+cname: Build and push image to Dockerhub
 on:
   push:
     branches: [ "main" ]
@@ -26,4 +26,4 @@ jobs:
       - name: Push image to Dockerhub
         run: docker push andrehsvictor/dailydo-api:0.1
       - name: Deploy to Render.com
-        run: curl ${{ RENDER_HOOK_URL }}
+        run: curl ${{ secrets.RENDER_HOOK_URL }}
