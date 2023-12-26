@@ -13,7 +13,7 @@ jobs:
       - name: Build .jar file
         run: docker run -d maven mvn clean install
       - name: Build image
-        run: docker buildx build -t andrehsvictor/dailydo-api:0.1 .
+        run: docker buildx build -f Dockerfile -t andrehsvictor/dailydo-api:0.1 .
       - name: Dockerhub login
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
       - name: Push image to Dockerhub
